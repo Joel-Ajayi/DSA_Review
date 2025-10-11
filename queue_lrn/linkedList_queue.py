@@ -1,8 +1,10 @@
-import math
-from typing import Optional, Any
+from typing import Optional, TypeVar, Generic
+
+# Generic type for the data stored inside a Node
+T = TypeVar("T")
 
 
-class Node:
+class Node(Generic[T]):
     """A node in a (singly) linked list.
 
     Attributes:
@@ -10,10 +12,10 @@ class Node:
         next: optional reference to the next node
     """
 
-    data: int
-    next: Optional["Node"]
+    data: T
+    next: Optional["Node[T]"]
 
-    def __init__(self, data: int, next: Optional["Node"] = None):
+    def __init__(self, data: T, next: Optional["Node[T]"] = None) -> None:
         self.data = data
         self.next = next
 
@@ -21,15 +23,15 @@ class Node:
         return f"Node({self.data!r})"
 
 
-class Queue:
-    head: Optional["Node"]
-    tail: Optional["Node"]
+class Queue(Generic[T]):
+    head: Optional[Node[T]]
+    tail: Optional[Node[T]]
     len: int = 0
 
-    def __init__(self, value: Optional[int] = None) -> None:
-        new_node = None
+    def __init__(self, value: Optional[T] = None) -> None:
+        new_node: Optional[Node[T]] = None
 
-        if value != None:
+        if value is not None:
             new_node = Node(value)
             self.len = 1
         self.head = new_node
@@ -45,34 +47,33 @@ class Queue:
         link = f"{link} -> tail"
         return link
 
-    def enqueue(self, value):
+    def enqueue(self, value: T) -> None:
         new_node = Node(value)
-        self.len += 1
 
         if self.tail is None:
+            # empty queue
             self.head = new_node
             self.tail = new_node
+            self.len = 1
             return
 
         self.tail.next = new_node
         self.tail = new_node
+        self.len += 1
 
-    def dequeue(self):
-        temp_node = self.head
-        self.len -= 1
-
-        if temp_node is None:
+    def dequeue(self) -> Optional[T]:
+        if self.head is None:
             return None
 
-        if self.len == 0:
-            self.head = None
+        value = self.head.data
+        self.head = self.head.next
+        self.len -= 1
+        if self.head is None:
             self.tail = None
-        else:
-            self.head = temp_node.next
 
-        return temp_node
+        return value
 
-    def peek(self) -> Optional[int]:
+    def peek(self) -> Optional[T]:
         """Return the value at the front of the queue without removing it."""
         if self.head is None:
             return None

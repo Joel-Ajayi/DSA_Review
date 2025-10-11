@@ -1,85 +1,78 @@
-from typing import Optional, Any
+import sys
+from os.path import abspath, dirname
 
+sys.path.insert(0, dirname(dirname(abspath(__file__))))
+from typing import Optional, Any, cast
 
-class Node:
-    left: Optional["Node"]
-    right: Optional["Node"]
-    data: int
-
-    def __init__(
-        self, data: int, left: Optional["Node"] = None, right: Optional["Node"] = None
-    ) -> None:
-        self.data = data
-        self.left = left
-        self.right = right
+# Use absolute import so the module can be run as a script from the repo root.
+from queue_lrn.linkedList_queue import Queue
 
 
 class Tree:
-    root: Node
+    tree: list[Optional[int]]
+    lastUsedIndex: int
+    maxSize: int
 
-    def __init__(self, data: int):
-        self.root = Node(data)
+    def __init__(self, max: int):
+        self.tree = [None] * max
+        self.lastUsedIndex = 0
+        self.maxSize = max
 
-    def preorderT(self, node: Optional["Node"] = None):
-        if not node is None:
-            print(f"{node.data} -> ")
-            self.preorderT(node.left)
-            self.preorderT(node.right)
+    def insert(self, val: int):
+        if self.lastUsedIndex + 1 == self.maxSize:
+            return "The tree is full"
 
-    def inorder(self, node: Node):
-        if node.left:
-            self.inorder(node.left)
+        self.lastUsedIndex += 1
+        self.tree[self.lastUsedIndex] = val
+        return "The value has been inserted"
 
-        print(f"{node.data} -> ")
-
-        if node.right:
-            self.inorder(node.right)
-
-    def postorder(self, node: Optional["Node"] = None):
-        if node is None:
+    def preorder(self, i=1):
+        if i >= self.maxSize:
             return
 
-        self.postorder(node.left)
-        self.postorder(node.right)
-        print(f"{node.data} -> ")
+        print(self.tree[i])
+        left_index = 2 * i
+        right_index = (2 * i) + 1
+        self.preorder(left_index)
+        self.preorder(right_index)
 
-    def levelorder(self, node: Node):
-        pass
+    def inorder(self, i=1):
+        if i >= self.maxSize:
+            return
 
+        left_index = 2 * i
+        right_index = (2 * i) + 1
+        self.preorder(left_index)
+        print(self.tree[i])
+        self.preorder(right_index)
 
-tree = Tree(1)
-n3 = Node(3)
-n2 = Node(2)
-n4 = Node(4)
-n5 = Node(5)
-n6 = Node(6)
-n7 = Node(7)
-n8 = Node(8)
-n9 = Node(9)
-n10 = Node(10)
+    def postorder(self, i=1):
+        if i >= self.maxSize:
+            return
 
-tree.root.left = n2
-n2.left = n4
-n2.right = n5
+        left_index = 2 * i
+        right_index = (2 * i) + 1
+        self.preorder(left_index)
+        self.preorder(right_index)
+        print(self.tree[i])
 
-n4.left = n9
-n4.right = n10
-
-
-tree.root.right = n3
-n3.right = n7
-n3.left = n6
-
-print("O(n) space and time compexity")
-print("Reorder Traversal")
-tree.preorderT(tree.root)
+    def levelorder(self):
+        for i in range(1, self.lastUsedIndex + 1):
+            print(self.tree[i])
 
 
-print("Inorder Traversal")
-tree.inorder(tree.root)
+tree = Tree(10)
+tree.insert(1)
+tree.insert(2)
+tree.insert(3)
+tree.insert(4)
+tree.insert(5)
+tree.insert(6)
+tree.insert(7)
+tree.insert(9)
+tree.insert(10)
 
-print("Post order Traversal")
-tree.postorder(tree.root)
 
-print("Level order Traversal")
-tree.postorder(tree.root)
+# tree.preorder()
+
+tree.levelorder()
