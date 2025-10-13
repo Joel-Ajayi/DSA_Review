@@ -115,6 +115,7 @@ class AVLTree:
             return node
         return self.getMinValNode(node.left)
 
+    # O(logN) for space and time
     def delete(self, val: int, node: Optional["Node"] = None):
         if node is None:
             return None
@@ -169,8 +170,8 @@ class AVLTree:
         #        30                     20
         #      /                       /  \
         #     20      ->              10   30
-        #    /  \                           \
-        #  10    25                          25
+        #    /  \                          /
+        #  10    25                       25
 
         new_root = cast(Node, node.left)
 
