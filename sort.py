@@ -41,11 +41,15 @@ class Sort:
         for i in range(1, n):
             # assuming array <= i is sorted
             insertion_val = arr[i]
+            j = i - 1
 
             # compare the insertion index with the sorted part of the array
-            for j in range(i - 1, -1, -1):
-                if insertion_val < arr[j]:
-                    arr[j + 1], arr[j] = arr[j], insertion_val
+            while j >= 0 and insertion_val < arr[j]:
+                arr[j + 1] = arr[j]
+                j -= 1
+
+            # 2. INSERT: Place the key into the created gap.
+            arr[j + 1] = insertion_val
 
         return arr
 
@@ -173,5 +177,5 @@ s = Sort([64, 34, 25, 5, 22, 11, 90, 12])
 # print(s.insertion())
 # print(s.merge_sort())
 # print(s.quick(s.arr))
-print(s.heap_sort())
+# print(s.heap_sort())
 #
