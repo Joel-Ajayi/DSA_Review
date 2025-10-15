@@ -3,7 +3,7 @@ Number factor problem
 """
 
 
-def number_factor_top_bottom(n: int, count=0):
+def number_factor_top_bottom(n: int, memo: dict[int, int] = {}):
     if n in (0, 1, 2):
         return 1
     if n == 3:
@@ -11,11 +11,13 @@ def number_factor_top_bottom(n: int, count=0):
     if n < 0:
         return 0
 
-    sub1 = number_factor_top_bottom(n - 1)
-    sub2 = number_factor_top_bottom(n - 3)
-    sub3 = number_factor_top_bottom(n - 4)
+    if not n in memo:
+        sub1 = number_factor_top_bottom(n - 1)
+        sub2 = number_factor_top_bottom(n - 3)
+        sub3 = number_factor_top_bottom(n - 4)
+        memo[n] = sum([sub1, sub2, sub3])
 
-    return sum([sub1, sub2, sub3])
+    return memo[n]
 
 
 # ways(0) -> 1 (The only way is an empty set)

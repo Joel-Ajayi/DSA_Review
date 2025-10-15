@@ -6,21 +6,21 @@ ouput: max robbery ammount
 """
 
 
-def house_robber_tb(n: int, houses: list[int], robbed_houses: dict[int, int] = {}):
+def house_robber_tb(n: int, houses: list[int], memo: dict[int, int] = {}):
+    if n < 1:
+        return 0
     if n == 1:
         return houses[0]
     if n == 2:
         return max(houses[0], houses[1])
-    if n < 1:
-        return 0
 
-    if n not in robbed_houses:
+    if n not in memo:
         curr = houses[n - 1]
         prev_2 = house_robber_tb(n - 2, houses)
         prev_1 = house_robber_tb(n - 1, houses)
-        robbed_houses[n] = max(curr + prev_2, prev_1)
+        memo[n] = max(curr + prev_2, prev_1)
 
-    return robbed_houses[n]
+    return memo[n]
 
 
 # greedy algo
