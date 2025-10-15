@@ -99,7 +99,7 @@ class Sort:
             pivot_index = end_index  # note: pivot has to be between start and end index
             swap_index = -1
 
-            for i in range(start_index, end_index):
+            for i in range(start_index, end_index + 1):
                 if arr[i] > arr[pivot_index]:
                     if swap_index == -1:
                         swap_index = i
@@ -109,11 +109,11 @@ class Sort:
 
             # swap
             if swap_index == -1:
-                return arr
-
-            arr[swap_index], arr[pivot_index] = arr[pivot_index], arr[swap_index]
-            self.quick(arr, start_index, swap_index - 1)
-            self.quick(arr, swap_index + 1, end)
+                self.quick(arr, start_index, end_index - 1)
+            else:
+                arr[swap_index], arr[pivot_index] = arr[pivot_index], arr[swap_index]
+                self.quick(arr, start_index, swap_index - 1)
+                self.quick(arr, swap_index + 1, end)
 
         return arr
 
@@ -169,13 +169,32 @@ class Sort:
 
         return arr_copy
 
+    # for 1 to n
+    def minimumSwaps(self):
+        arr = self.arr.copy()
+        i = 0
+        n = len(arr)
 
-s = Sort([64, 34, 25, 5, 22, 11, 90, 12])
+        while i < n:
+            # Rule: for a value K, it should belong to index K-1
+            # Incase K is zero?,
+            # i = K-1
+            k = arr[i]
+            correct_index = k - 1
+            if i != correct_index:
+                arr[i], arr[correct_index] = arr[correct_index], arr[i]
+            else:
+                i += 1
+
+        return arr
+
+
+s = Sort([1, 5, 2, 4, 6, 7])
 
 # print(s.bubble())
 # print(s.selection())
 # print(s.insertion())
 # print(s.merge_sort())
 # print(s.quick(s.arr))
-# print(s.heap_sort())
+print(s.minimumSwaps())
 #
