@@ -3,17 +3,30 @@ Knapsack Problem
 """
 
 
-def knapsack(n: int, c: int, arr: list[tuple[int, int]], tracker: dict[int, int] = {}):
+def knapsack(
+    currentIndex: int,
+    capacity: int,
+    items: list[tuple[int, int]],
+    tempDict: dict[int, int] = {},
+):
 
-    if n > len(arr) or c <= 0 or arr[n - 1][0] > c:
+    if (
+        currentIndex > len(items)
+        or capacity <= 0
+        or items[currentIndex - 1][0] > capacity
+    ):
         return 0
 
-    val = arr[n - 1]
-    # if not n in tracker:
-    # do not take current val
-    option1 = knapsack(n + 1, c, arr, tracker)
-    # take current val
-    option2 = val[1] + knapsack(n + 1, c - val[0], arr, tracker)
+    val = items[currentIndex - 1]
+    # Decisions
+    # 1.    do not take current val.
+    #       No decrement in capacity
+    # 2.    take current val
+
+    option1 = knapsack(currentIndex + 1, capacity, items, tempDict)
+    #
+    option2 = val[1] + knapsack(currentIndex + 1, capacity - val[0], items, tempDict)
+
     ans = max(option1, option2)
 
     return ans
@@ -23,37 +36,34 @@ item_values = [60, 100, 50]
 item_weights = [10, 20, 30]
 items = list(zip(item_weights, item_values))
 knapsack_capacity = 50
-print(knapsack(1, c=knapsack_capacity, arr=items))
+print(knapsack(1, capacity=knapsack_capacity, items=items))
 
 
 # With greedy Algo
-def zero_one_knapsack(values, weights, capacity):
+def zero_one_knapsack(
+    values,
+    weights,
+    capacity,
+):
+    tempDict: dict[tuple[int, int], int] = {}
     num_items = len(values)
     # Create the DP table
-    dp = [[0 for _ in range(capacity + 1)] for _ in range(num_items + 1)]
 
-    # Build table dp[][] in bottom-up manner
     for i in range(1, num_items + 1):
         for w in range(1, capacity + 1):
-            # item_index is i-1 because our items are 0-indexed
-            item_index = i - 1
+            if weights[i - 1] > w:
+                tempDict[(i, w)] = tempDict.get((i - 1, w), 0)
+                continue
 
-            # If the current item's weight is more than the current capacity w,
-            # we can't include it.
-            if weights[item_index] > w:
-                dp[i][w] = dp[i - 1][w]
-            else:
-                # Find the maximum of two choices:
-                # 1. Don't include the item
-                # 2. Include the item
-                value_if_not_included = dp[i - 1][w]
-                value_if_included = (
-                    values[item_index] + dp[i - 1][w - weights[item_index]]
-                )
+            # Do not pick the current item
+            # Hence just use the prev max value
+            option1 = tempDict.get((i - 1, w), 0)
+            # subtract from the current capacity
+            option2 = values[i - 1] + tempDict.get((i - 1, w - weights[i - 1]), 0)
 
-                dp[i][w] = max(value_if_not_included, value_if_included)
+            tempDict[(i, w)] = max(option1, option2)
 
-    return dp[num_items][capacity]
+    return tempDict[(num_items, capacity)]
 
 
 # --- Example ---

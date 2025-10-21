@@ -95,5 +95,51 @@ def convert_bt(
     return dp[len1][len2]
 
 
-print(convert_bt("tab", "tbrlt6"))
-print(convert_tb("tab", "tbrlt6"))
+def convert_bt_dict(s1: str, s2: str, tempDict: dict[tuple[int, int], int] = {}):
+    len1, len2 = len(s1), len(s2)
+
+    # row - s1
+    # col - s2
+
+    # Base cases
+    # when s2 is emtpy
+    # Cost of inserting all of s1 to get an empty s2
+    for i in range(len1 + 1):
+        key = (i, 0)
+        tempDict[key] = i
+
+    # when s1 is empty
+    # Cost of deleting all of s2 to get empty s1
+    for j in range(len2 + 1):
+        key = (0, j)
+        tempDict[key] = j
+
+    for i in range(1, len1 + 1):
+        for j in range(1, len2 + 1):
+            tempDict.setdefault((i, j), 0)
+            # when characters match
+            if s1[i - 1] == s2[j - 1]:
+                #  no operation is needed, so the cost is just the cost of
+                # the subproblem before these characters.
+                tempDict[(i, j)] = tempDict[(i - 1, j - 1)]
+            else:
+                # when you are inserting into s2, move s1 index to next
+                # f(index1+1, index2) for recursion or (index1, index2-1) for table
+                insert_op = tempDict[(i, j - 1)]
+
+                # when you are deleting current value of s2, move s2 index to next
+                # f(index1, index2+1) for recursion or (index1-1, index2) for table
+                delete_op = tempDict[(i - 1, j)]
+
+                # when you are replacing current value of s2 with s1
+                # f(index1, index2) for recursion or f(index1-1, index2-1) for table
+                replace_op = tempDict[(i - 1, j - 1)]
+
+                tempDict[(i, j)] = 1 + min([insert_op, delete_op, replace_op])
+
+    return tempDict[(len1, len2)]
+
+
+print(convert_bt("tab", "tbrlt"))
+print(convert_bt_dict("tab", "tbrlt"))
+print(convert_tb("tab", "tbrlt"))
