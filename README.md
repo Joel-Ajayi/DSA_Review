@@ -1,19 +1,13 @@
 # Data Structures & Algorithms (DSA)
 
 This workspace contains implementations and learning notes for common data structures and algorithms in Python.
-
-Current focus
-
-- Binary Tree (working directory)
+- Check out questions I have solved on Leetcode: https://leetcode.com/u/yotstack
 
 Topics covered already
 
 - Linked Lists (`linkedlist/`) - singly, doubly, circular implementations (`linkedlist.py`, `doublinkedlist.py`, `circularLinkedlIst.py`, `CDLinkedList.py`)
 - Queues (`queue_lrn/`) - array-backed and linked-list-backed queues (`list_queue.py`, `linkedList_queue.py`)
 - Stacks (`stack/`) - stack implementations (`stack.py`, `linked_stack.py`)
-
-Planned topics (roadmap)
-
 - Binary Search Tree (BST)
 - AVL Tree
 - Trie
@@ -21,6 +15,8 @@ Planned topics (roadmap)
 - Hash Table
 - Search Algorithms (linear, binary, jump, interpolation)
 - Sorting Algorithms (bubble, selection, insertion, merge, quick, heap, counting, radix)
+  
+Planned topics (roadmap)
 - Graphs (representations, BFS, DFS, shortest paths)
 - Greedy Algorithms
 - Divide and Conquer
