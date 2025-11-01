@@ -42,9 +42,9 @@ class Tree:
 
         left_index = 2 * i
         right_index = (2 * i) + 1
-        self.preorder(left_index)
+        self.inorder(left_index)
         print(self.tree[i])
-        self.preorder(right_index)
+        self.inorder(right_index)
 
     def postorder(self, i=1):
         if i >= self.maxSize:

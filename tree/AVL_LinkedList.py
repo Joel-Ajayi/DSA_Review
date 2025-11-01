@@ -199,7 +199,7 @@ class AVLTree:
         left_level = self.get_tree_depth(node.left, level + 1)
         right_level = self.get_tree_depth(node.right, level + 1)
 
-        return left_level if left_level > right_level else right_level
+        return max(left_level, right_level)
 
 
 avl = AVLTree(5)

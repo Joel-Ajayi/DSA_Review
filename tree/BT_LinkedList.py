@@ -203,15 +203,15 @@ tree.insert(12)
 print("Level order Traversal")
 tree.levelorder()
 
-print(tree.search(5))
+# print(tree.search(5))
 
 
-print(tree.search(12))
+# print(tree.search(12))
 
-tree.get_node_level(tree.root, 12)
+# tree.get_node_level(tree.root, 12)
 
-print(tree.getDeepestNode())
+# print(tree.getDeepestNode())
 
-print(tree.deleteDeepestNode())
+# print(tree.deleteDeepestNode())
 
-print(tree.getDeepestNode())
+# print(tree.getDeepestNode())

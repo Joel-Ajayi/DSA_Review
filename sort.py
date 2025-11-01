@@ -95,25 +95,22 @@ class Sort:
     def quick(self, arr: list[int], start_index=0, end: Optional[int] = None):
         end_index = len(self.arr) - 1 if end is None else end
 
-        if start_index < end_index:
-            pivot_index = end_index  # note: pivot has to be between start and end index
-            swap_index = -1
+        if start_index >= end_index:
+            return arr
 
-            for i in range(start_index, end_index + 1):
-                if arr[i] > arr[pivot_index]:
-                    if swap_index == -1:
-                        swap_index = i
-                elif swap_index != -1:
-                    arr[swap_index], arr[i] = arr[i], arr[swap_index]
-                    swap_index += 1
+        pivot, swap_index = (
+            arr[end_index],
+            start_index,
+        )  # note: pivot has to be between start and end index
 
-            # swap
-            if swap_index == -1:
-                self.quick(arr, start_index, end_index - 1)
-            else:
-                arr[swap_index], arr[pivot_index] = arr[pivot_index], arr[swap_index]
-                self.quick(arr, start_index, swap_index - 1)
-                self.quick(arr, swap_index + 1, end)
+        for i in range(start_index, end_index):
+            if arr[i] <= pivot:
+                arr[swap_index], arr[i] = arr[i], arr[swap_index]
+                swap_index += 1
+
+        arr[swap_index], arr[end_index] = arr[end_index], arr[swap_index]
+        self.quick(arr, start_index, swap_index - 1)
+        self.quick(arr, swap_index + 1, end)
 
         return arr
 
@@ -195,6 +192,6 @@ s = Sort([1, 5, 2, 4, 6, 7])
 # print(s.selection())
 # print(s.insertion())
 # print(s.merge_sort())
-# print(s.quick(s.arr))
-print(s.minimumSwaps())
+print(s.quick(s.arr))
+# print(s.minimumSwaps())
 #

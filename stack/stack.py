@@ -1,5 +1,13 @@
 from typing import Optional, Any, cast
 
+from queue import Queue
+
+q = Queue(1)
+q.maxsize += 1
+q.empty()
+q.get()
+q.put()
+
 # append to end
 class Stack:
     len:int

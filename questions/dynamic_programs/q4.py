@@ -99,6 +99,5 @@ matrix_2d2 = [
 
 n = len(matrix_2d)
 n2 = len(matrix_2d2)
-print(min_cost(matrix_2d, n - 1, n - 1))
 print(num_paths(matrix_2d2, 25, n2 - 1, n2 - 1))
-# print(min_cost(matrix_2d, n - 1, n - 1))
+print(min_cost(matrix_2d, n - 1, n - 1))
